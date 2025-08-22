@@ -86,7 +86,9 @@ require session to be stored in the server.
 - Correctly use the options table and support the different question types
 - Clearly define the machine learning algorithms to predict based on users answers
 - Handle logout
-
+- Add api endpoints to create questions and surveys
+- Create an admin app to create questions and surveys
+- Add indeces to the data model
 
 
 

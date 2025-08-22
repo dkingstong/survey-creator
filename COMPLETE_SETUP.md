@@ -25,7 +25,7 @@ This is a complete full-stack application template with:
 ### 1. Start the Database
 
 ```bash
-# From the project root directory
+# From the backend npm run db:up
 docker-compose up -d postgres pgadmin
 ```
 
@@ -39,7 +39,7 @@ This starts:
 cd Backend
 cp env.example .env
 npm install
-npm run dev
+npm run dev (this also runs the db command)
 ```
 
 Backend will be available at `http://localhost:3001`
@@ -54,120 +54,6 @@ npm run dev
 
 Frontend will be available at `http://localhost:5173`
 
-## Project Structure
-
-```
-waterlily/
-├── Frontend/                 # React application
-│   ├── src/
-│   │   ├── components/ui/    # shadcn/ui components
-│   │   ├── lib/utils.ts      # Utility functions
-│   │   ├── App.tsx           # Main app component
-│   │   └── main.tsx          # Entry point
-│   ├── package.json
-│   └── README.md
-├── Backend/                  # Node.js API
-│   ├── src/
-│   │   ├── config/           # Database configuration
-│   │   ├── middleware/       # Express middleware
-│   │   ├── routes/           # API routes
-│   │   └── index.ts          # Main server
-│   ├── init.sql              # Database schema
-│   ├── Dockerfile            # Backend container
-│   ├── package.json
-│   └── README.md
-├── docker-compose.yml        # Database services
-└── COMPLETE_SETUP.md         # This file
-```
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - User registration
-- `POST /api/auth/login` - User login
-
-### Users (Protected)
-- `GET /api/users` - Get all users
-- `GET /api/users/:id` - Get user by ID
-- `PUT /api/users/:id` - Update user
-- `DELETE /api/users/:id` - Delete user
-
-### Health Check
-- `GET /health` - Server health status
-
-## Testing the Setup
-
-### 1. Test Backend Health
-```bash
-curl http://localhost:3001/health
-```
-
-### 2. Register a User
-```bash
-curl -X POST http://localhost:3001/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Test User",
-    "email": "test@example.com",
-    "password": "password123"
-  }'
-```
-
-### 3. Login
-```bash
-curl -X POST http://localhost:3001/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "test@example.com",
-    "password": "password123"
-  }'
-```
-
-### 4. Access Frontend
-Open `http://localhost:5173` in your browser to see the React app.
-
-## Database Management
-
-### pgAdmin Web Interface
-- URL: http://localhost:5050
-- Email: admin@waterlily.com
-- Password: admin123
-
-### Direct Database Access
-```bash
-docker exec -it waterlily_postgres psql -U postgres -d waterlily_db
-```
-
-## Development Commands
-
-### Frontend
-```bash
-cd Frontend
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run preview  # Preview production build
-npm run lint     # Run ESLint
-```
-
-### Backend
-```bash
-cd Backend
-npm run dev      # Start development server
-npm run build    # Build for production
-npm start        # Start production server
-npm run lint     # Run ESLint
-```
-
-### Docker
-```bash
-# Start all services
-docker-compose up -d
-
-# View logs
-docker-compose logs -f
-
-# Stop all services
-docker-compose down
 ```
 
 ## Environment Configuration
@@ -185,78 +71,20 @@ JWT_SECRET=your-super-secret-jwt-key
 CORS_ORIGIN=http://localhost:5173
 ```
 
-## Features Included
+## Tradeoffs
 
-### Frontend Features
-- ✅ Modern React with TypeScript
-- ✅ Tailwind CSS for styling
-- ✅ shadcn/ui components
-- ✅ Responsive design
-- ✅ Dark mode ready
-- ✅ Hot module replacement
-- ✅ ESLint configuration
+JWT tokens VS other auth -> easy to develop and doesnt depend on 3rd party like Auth0, good for horizontal scaling of services since it doesnt
+require session to be stored in the server.
+Normalized schema vs Denormalized schema -> Easier to maintain relationships, and consistency. Denorm would've been easier to populate the sruvey with questions in one call but difficult to update all places where the data is repeated.
+Cache vs no Cache: Could've implemented a better way of caching responses and questions in the FE and in the end submit and save the data on the BE, but I think the user expects the data to be persisted after they hit next and comeback later to continue. Leveraging something like Redis could help because it's fast although we're not completely saving the answers, but could maybe run a periodic job to save the answers or leverage a queue to save later, which could create some eventual consistency but I think it doesn't matter to this specific case.
 
-### Backend Features
-- ✅ Express.js with TypeScript
-- ✅ PostgreSQL database
-- ✅ JWT authentication
-- ✅ User management CRUD
-- ✅ Input validation
-- ✅ Error handling
-- ✅ Security middleware
-- ✅ Rate limiting
-- ✅ CORS configuration
+## Improvements
+UI design for better user experience.
+Leverage the session table to correctly revoke and renew access tokens
+Correctly use the options table and support the different question types
+Clearly define the machine learning algorithms to predict based on users answers
+Handle logout
 
-### DevOps Features
-- ✅ Docker Compose for database
-- ✅ pgAdmin for database management
-- ✅ Multi-stage Docker builds
-- ✅ Environment configuration
-- ✅ Development and production setups
 
-## Next Steps
 
-1. **Connect Frontend to Backend**
-   - Add API calls from React to your Express endpoints
-   - Implement authentication flow
-   - Add user management features
 
-2. **Add More Features**
-   - Create additional database tables
-   - Add more API endpoints
-   - Implement file uploads
-   - Add real-time features with WebSockets
-
-3. **Enhance Security**
-   - Add refresh tokens
-   - Implement role-based access control
-   - Add API documentation
-   - Set up monitoring and logging
-
-4. **Deploy**
-   - Set up CI/CD pipeline
-   - Deploy to cloud platforms
-   - Configure production environment
-
-## Troubleshooting
-
-### Database Connection Issues
-- Ensure Docker is running
-- Check if PostgreSQL container is up: `docker ps`
-- Verify environment variables in Backend/.env
-
-### Port Conflicts
-- Frontend: Change port in Frontend/vite.config.ts
-- Backend: Change PORT in Backend/.env
-- Database: Change ports in docker-compose.yml
-
-### CORS Issues
-- Update CORS_ORIGIN in Backend/.env to match your frontend URL
-
-## Support
-
-- Frontend documentation: `Frontend/README.md`
-- Backend documentation: `Backend/README.md`
-- Database schema: `Backend/init.sql`
-
-Your full-stack application is now ready for development! 🚀

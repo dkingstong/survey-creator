@@ -1,0 +1,61 @@
+{
+  "name": "waterlily-backend",
+  "version": "1.0.0",
+  "description": "Backend API for Waterlily application",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "npm run db:up && tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "type-check": "tsc --noEmit",
+    "db:down": "docker compose down",
+    "db:up": "docker compose up -d",
+    "seed": "tsx src/scripts/seedData.ts",
+    "typeorm": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm -d dist/config/database.js",
+    "typeorm-dev": "./node_modules/.bin/ts-node ./node_modules/.bin/typeorm -d src/config/data-source.ts",
+    "migration:generate": "npm run typeorm-dev -- migration:generate ./src/migrations/migration",
+    "migration:create": "typeorm migration:create",
+    "migration:run": "npm run typeorm -- migration:run",
+    "migration-dev:run": "npm run typeorm-dev -- migration:run",
+    "migration:revert": "npm run typeorm -- migration:revert"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "typescript",
+    "postgresql"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.11.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.17"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.5",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.10.0",
+    "@types/pg": "^8.10.9",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "eslint": "^8.55.0",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.6.0",
+    "typescript": "^5.3.2"
+  }
+}

@@ -75,17 +75,17 @@ CORS_ORIGIN=http://localhost:5173
 
 ## Tradeoffs
 
-JWT tokens VS other auth -> easy to develop and doesnt depend on 3rd party like Auth0, good for horizontal scaling of services since it doesnt
+- JWT tokens VS other auth -> easy to develop and doesnt depend on 3rd party like Auth0, good for horizontal scaling of services since it doesnt
 require session to be stored in the server.
-Normalized schema vs Denormalized schema -> Easier to maintain relationships, and consistency. Denorm would've been easier to populate the sruvey with questions in one call but difficult to update all places where the data is repeated.
-Cache vs no Cache: Could've implemented a better way of caching responses and questions in the FE and in the end submit and save the data on the BE, but I think the user expects the data to be persisted after they hit next and comeback later to continue. Leveraging something like Redis could help because it's fast although we're not completely saving the answers, but could maybe run a periodic job to save the answers or leverage a queue to save later, which could create some eventual consistency but I think it doesn't matter to this specific case.
+- Normalized schema vs Denormalized schema -> Easier to maintain relationships, and consistency. Denorm would've been easier to populate the sruvey with questions in one call but difficult to update all places where the data is repeated.
+- Cache vs no Cache: Could've implemented a better way of caching responses and questions in the FE and in the end submit and save the data on the BE, but I think the user expects the data to be persisted after they hit next and comeback later to continue. Leveraging something like Redis could help because it's fast although we're not completely saving the answers, but could maybe run a periodic job to save the answers or leverage a queue to save later, which could create some eventual consistency but I think it doesn't matter to this specific case.
 
 ## Improvements
-UI design for better user experience.
-Leverage the session table to correctly revoke and renew access tokens
-Correctly use the options table and support the different question types
-Clearly define the machine learning algorithms to predict based on users answers
-Handle logout
+- UI design for better user experience.
+- Leverage the session table to correctly revoke and renew access tokens
+- Correctly use the options table and support the different question types
+- Clearly define the machine learning algorithms to predict based on users answers
+- Handle logout
 
 
 

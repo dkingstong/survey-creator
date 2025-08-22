@@ -40,6 +40,8 @@ cd Backend
 cp env.example .env
 npm install
 npm run dev (this also runs the db command)
+npm run migrate
+npm run seed (will populate the db with some surveys and questions)
 ```
 
 Backend will be available at `http://localhost:3001`
